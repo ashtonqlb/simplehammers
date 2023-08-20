@@ -7,6 +7,7 @@ import org.spysat.simplehammers.item.HammerItem;
 import org.spysat.simplehammers.item.ImpactHammerItem;
 import org.spysat.simplehammers.item.ModItemGroup;
 import org.spysat.simplehammers.config.ConfigProvider;
+import org.spysat.simplehammers.util.HammerRecipeSerialization;
 
 public class SimpleHammers implements ModInitializer {
     public static final String MOD_ID = "simplehammers";

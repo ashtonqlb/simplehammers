@@ -6,10 +6,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import net.fabricmc.loader.api.FabricLoader;
 import org.spysat.simplehammers.SimpleHammers;
+import org.spysat.simplehammers.util.HammerRecipeSerialization;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -17,7 +17,8 @@ public class ConfigProvider {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path configPath = FabricLoader.getInstance().getConfigDir();
     private static final File configFile = new File(configPath + File.separator + "simplehammers.json");
-    public static Config CONFIG;
+    public static Config CONFIG = new Config();
+    private static final HammerRecipeSerialization serial = new HammerRecipeSerialization();
 
     // Method to load and handle configuration settings
     public static void loadConfig() {
@@ -29,13 +30,11 @@ public class ConfigProvider {
                 SimpleHammers.LOGGER.info("Creating default config.");
 
                 // Create and save a default configuration
-                String json = GSON.toJson(JsonParser.parseString(GSON.toJson(new Config())));
+                String json = GSON.toJson(JsonParser.parseString(GSON.toJson(CONFIG)));
                 try (FileWriter out = new FileWriter(configFile)) {
                     out.write(json);
                 }
 
-                // Set CONFIG to the default configuration
-                CONFIG = new Config();
                 SimpleHammers.LOGGER.info("Successfully created default config.");
             } else {
                 SimpleHammers.LOGGER.info("Config file was found, loading it...");
@@ -58,5 +57,9 @@ public class ConfigProvider {
             CONFIG = new Config();
             SimpleHammers.LOGGER.warn("Defaulting to original config.");
         }
+    }
+
+    public static HammerRecipeSerialization getSerial() {
+        return serial;
     }
 }
