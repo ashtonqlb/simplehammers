@@ -13,8 +13,7 @@ import org.spysat.simplehammers.SimpleHammers;
 
 public class HammerItem extends MiningToolItem {
 
-    public static final TagKey<Block> HAMMERABLES = TagKey.of(RegistryKeys.BLOCK, new Identifier("simplehammers", "mineable_with_hammer")); //Custom block tag
-
+    private static final TagKey<Block> HAMMERABLES = TagKey.of(RegistryKeys.BLOCK, new Identifier("simplehammers:mineable_with_hammer"));
     public static Item WOODEN_HAMMER = registerHammer("wooden_hammer", new HammerItem(ToolMaterials.WOOD, 3, 2, HAMMERABLES, new Item.Settings()));
     public static Item STONE_HAMMER = registerHammer("stone_hammer", new HammerItem(ToolMaterials.STONE, 3, 2, HAMMERABLES, new Item.Settings()));
     public static Item IRON_HAMMER = registerHammer("iron_hammer", new HammerItem(ToolMaterials.IRON, 3, 2, HAMMERABLES, new Item.Settings()));

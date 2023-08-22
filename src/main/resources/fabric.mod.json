@@ -1,12 +1,13 @@
 {
   "schemaVersion": 1,
   "id": "simplehammers",
-  "version": "0.8",
+  "version": "0.9",
   "name": "Simple Hammers",
   "description": "All manner of hammers!",
   "authors": [
     "spysat",
-    "CanadianBaconBoi"
+    "CanadianBaconBoi",
+    "CaramelCorn"
   ],
   "contact": {
     "repo": "https://github.com/ashtonqlb/simplehammers"
@@ -20,6 +21,9 @@
     ],
     "main": [
       "org.spysat.simplehammers.SimpleHammers"
+    ],
+    "fabric-datagen": [
+      "org.spysat.simplehammers.util.HammerRecipeDataGen"
     ],
     "jei_mod_plugin": [
       "org.spysat.simplehammers.integration.jei.SimpleHammersPlugin"

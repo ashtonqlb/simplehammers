@@ -5,6 +5,7 @@ plugins {
 
 version = project.mod_version
 group = project.maven_group
+mod_id = project.mod_id
 
 repositories {
     maven {
@@ -44,5 +45,29 @@ dependencies {
     // compile against the JEI API but do not include it at runtime
     modImplementation("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}") {
         exclude(group: "mezz.jei")  // Fix mappings issue caused by MojMap
+    }
+}
+
+loom {
+    runs {
+        datagenClient {
+            inherit client
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+            vmArg "-Dfabric-api.datagen.modid=${mod_id}"
+
+            runDir "build/datagen"
+        }
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs += [
+                    'src/main/generated'
+            ]
+        }
     }
 }
