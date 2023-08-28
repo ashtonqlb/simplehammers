@@ -10,8 +10,6 @@
     "minecraft:dirt",
     "minecraft:gravel",
     "minecraft:sand",
-    "simplehammers:dust",
-    "minecraft:diorite",
-    "minecraft:netherrack"
+    "simplehammers:dust"
   ]
 }
