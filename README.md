@@ -19,6 +19,14 @@ Both of these tools are completely customisable in the configuration file, which
 
 On it's own this mod doesn't really do a whole lot, as it's intended for usage in modpacks, where resources might be configured to be scarce. Pack developers can integrate this mod as an alternative resource gathering solution 
 
+## Building from Source
+To build this mod from the source:
+
+1. Clone this repository
+2. Open the cloned repository in the terminal
+3. Type in `gradlew build` and hit Enter
+4. The compiled mod will be located in `/build/libs/`
+
 ## License
 
 The software portion of this project is licensed under the [MIT License](https://github.com/ashtonqlb/simplehammers/blob/master/LICENSE). The artwork (textures, blocks, mod icon) used in this project however, is copyrighted and used under permission from it's author. Any subsequent or derivative works must use their own artwork, or [contact the rights holder](mailto:kgauthiermiller@gmail.com)
