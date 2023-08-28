@@ -1,10 +1,20 @@
 package org.spysat.simplehammers.util;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -29,12 +39,34 @@ public class HammerRecipeDataGen implements DataGeneratorEntrypoint {
 
         public static final TagKey<Block> HAMMERABLES = TagKey.of(RegistryKeys.BLOCK, new Identifier("simplehammers:mineable_with_hammer")); //Custom block tag
 
-        private @NotNull ArrayList<String> parseRecipeList(String path){
+        private @NotNull ArrayList<String> parseRecipeList(String path) {
             Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
 
-            // Read the JSON content and parse it into an array of HammerRecipe objects
-            HammerRecipe[] recipeArray = gson.fromJson(path, HammerRecipe[].class);
+            // Read the JSON content from the file
+            try {
+                Reader reader = Files.newBufferedReader(Paths.get(path));
+                JsonObject obj = parser.parse(reader).getAsJsonObject();
 
+                // Extract the "recipeList" array
+                JsonArray recipeListJson = obj.getAsJsonArray("recipeList");
+
+                // Parse the "recipeList" array into an array of HammerRecipe objects
+                Type recipeArrayType = new TypeToken<HammerRecipe[]>(){}.getType();
+                HammerRecipe[] recipeArray = gson.fromJson(recipeListJson, recipeArrayType);
+
+                ArrayList<String> uniqueBlockIDs = getStrings(recipeArray);
+
+                return uniqueBlockIDs;
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle the exception
+                return null;
+            }
+        }
+
+
+        private @NotNull static ArrayList<String> getStrings(HammerRecipe @NotNull [] recipeArray) {
             Set<String> uniqueOutputs = new HashSet<>();
             ArrayList<String> uniqueBlockIDs = new ArrayList<>();
 
@@ -51,13 +83,12 @@ public class HammerRecipeDataGen implements DataGeneratorEntrypoint {
 
         @Override
         protected void configure(WrapperLookup arg) {
-            ArrayList<String> mineableBlockList = parseRecipeList("simplehammers.json");
+            ArrayList<String> mineableBlockList = parseRecipeList("../../run/config/simplehammers.json");
 
             for (String s : mineableBlockList) {
                 getOrCreateTagBuilder(HAMMERABLES).add(Registries.BLOCK.get(new Identifier(s)));
             }
         }
-        //TODO: This throws an error where it expects BEGIN_ARRAY but gets STRING when I call this and also parseRecipeList. I need to make sure that parseRecipeList is an ArrayList with all the unique Strings of recipeList in it
     }
 
     @Override
